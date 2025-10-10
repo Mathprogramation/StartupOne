@@ -1,55 +1,86 @@
 "use client";
 import React, { useState } from "react";
-import SolicitationManager from "./solicitations";
-import ResidentsManager from "./residents";
-import ScheduleManager from "./schedules";
+import SolicitationManager from "../Solicitacoes/page";
+import ResidentsManager from "../Residentes/page";
+import ScheduleManager from "../Agendamentos/page";
+import ColaboradoresPage from "../Colaboradores/page";
 
-export default function AdminPage() {
-  const [tab, setTab] = useState<"home" | "solicitations" | "residents" | "schedules">("home");
+// Definindo os tipos das abas (tabs)
+type TabType = "home" | "solicitations" | "residents" | "schedules" | "colaboradores";
+
+
+const AdminPage: React.FC = () => {
+  const [tab, setTab] = useState<TabType>("home"); // Estado tipado para TabType
 
   return (
-    <main className="p-6">
-      <h1 className="text-2xl font-bold mb-6">Painel do Administrador</h1>
+      <div className="flex min-h-screen">
+      <aside className="w-64 bg-blue-600 text-white p-4 flex flex-col">
+        <div>
+          <h1 className="text-2xl font-bold mb-6">KomunityON</h1>
+          <nav>
+            <ul>
+              <li>
+                <button
+                  className={`block py-2 px-4 mb-2 rounded ${tab === "solicitations" ? "bg-blue-700" : ""}`}
+                  onClick={() => setTab("solicitations")}
+                >
+                  Solicitações
+                </button>
+              </li>
+              <li>
+                <button
+                  className={`block py-2 px-4 mb-2 rounded ${tab === "residents" ? "bg-blue-700" : ""}`}
+                  onClick={() => setTab("residents")}
+                >
+                  Moradores
+                </button>
+              </li>
+              <li>
+                <button
+                  className={`block py-2 px-4 mb-2 rounded ${tab === "schedules" ? "bg-blue-700" : ""}`}
+                  onClick={() => setTab("schedules")}
+                >
+                  Agendamentos
+                </button>
+              </li>
+              <li>
+                <button
+                  className={`block py-2 px-4 mb-2 rounded ${tab === "colaboradores"? "bg-blue-700" : ""}`}
+                  onClick={() => setTab("colaboradores")}
+                >
+                  Colaboradores
+                </button>
+              </li>
+            </ul>
+          </nav>
+        </div>
 
-      {/* Menu de navegação */}
-      <div className="flex gap-4 mb-6">
-        <button
-          className={`px-4 py-2 rounded ${tab === "home" ? "bg-blue-600 text-white" : "bg-gray-200"}`}
-          onClick={() => setTab("home")}
-        >
-          Home
-        </button>
-        <button
-          className={`px-4 py-2 rounded ${tab === "solicitations" ? "bg-blue-600 text-white" : "bg-gray-200"}`}
-          onClick={() => setTab("solicitations")}
-        >
-          Solicitações
-        </button>
-        <button
-          className={`px-4 py-2 rounded ${tab === "residents" ? "bg-blue-600 text-white" : "bg-gray-200"}`}
-          onClick={() => setTab("residents")}
-        >
-          Moradores
-        </button>
-        <button
-          className={`px-4 py-2 rounded ${tab === "schedules" ? "bg-blue-600 text-white" : "bg-gray-200"}`}
-          onClick={() => setTab("schedules")}
-        >
-          Agendamentos
-        </button>
-      </div>
+        {/* Footer fixado ao final da sidebar */}
+        <footer className="mt-auto text-center pt-6 border-t border-blue-500">
+          <p className="text-sm">Administrador</p>
+          <p className="text-sm">admin@komunityon.com</p>
+        </footer>
+      </aside>
 
-      {/* Conteúdo das abas */}
-      {tab === "home" && (
-        <section>
-          <h2 className="text-xl font-semibold mb-4">📌 Solicitações Recentes</h2>
-          <SolicitationManager />
-        </section>
-      )}
+      {/* Conteúdo principal */}
+      <main className="flex-1 p-6">
+        <h1 className="text-2xl font-bold mb-6">Painel do Administrador</h1>
 
-      {tab === "solicitations" && <SolicitationManager />}
-      {tab === "residents" && <ResidentsManager />}
-      {tab === "schedules" && <ScheduleManager />}
-    </main>
+        {/* Conteúdo das abas */}
+        {tab === "home" && (
+          <section>
+            <h2 className="text-xl font-semibold mb-4">📌 Solicitações Recentes</h2>
+            <SolicitationManager />
+          </section>
+        )}
+
+        {tab === "solicitations" && <SolicitationManager />}
+        {tab === "residents" && <ResidentsManager />}
+        {tab === "schedules" && <ScheduleManager />}
+        {tab=== "colaboradores" && <ColaboradoresPage/>}
+      </main>
+    </div>
   );
-}
+};
+
+export default AdminPage;
